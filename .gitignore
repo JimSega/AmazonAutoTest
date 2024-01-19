@@ -3,6 +3,8 @@ build/
 *.yml
 *.yaml
 *.csv
+!**/src/test/resources/wrongInput.csv
+!**/src/test/resources/wrongPassword.csv
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
@@ -12,6 +14,7 @@ build/
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
+.idea/csv-editor.xml
 *.iws
 *.iml
 *.ipr
