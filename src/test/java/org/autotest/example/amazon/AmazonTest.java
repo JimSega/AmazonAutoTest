@@ -53,6 +53,7 @@ class AmazonTest {
     @CsvFileSource(resources = "/wrongPassword.csv")
     void wrongPassword(String name, String inputPassword, String xPath) {
         AmazonBasePage basePage = open(url, AmazonBasePage.class);
+        basePage.checkCaptcha();
         AmazonJoinUserPage amazonJoinUserPage = basePage.getJoinUserPage();
         amazonJoinUserPage.userElement.setValue(name).pressEnter();
         amazonJoinUserPage.passwordElement.setValue(inputPassword).pressEnter();
