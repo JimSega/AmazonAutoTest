@@ -21,6 +21,9 @@ public class AmazonBasePage {
     @FindBy(how = How.XPATH, using = "//a[text()='Sign in']")
     protected SelenideElement signIn;
 
+    @FindBy(how = How.XPATH, using = "//h1[contains(text(), 'Sign')]")
+    protected SelenideElement signOutDone;
+
     public AmazonJoinUserPage getJoinUserPage() {
         navigate.click();
         signIn.click();

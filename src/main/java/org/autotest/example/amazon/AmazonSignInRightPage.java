@@ -14,5 +14,4 @@ public class AmazonSignInRightPage extends AmazonBasePage {
 
     @FindBy(how = How.XPATH, using = "//a[text()='Sign Out']")
     protected SelenideElement signOut;
-
 }

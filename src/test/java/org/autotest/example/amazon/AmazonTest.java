@@ -16,20 +16,24 @@ class AmazonTest {
 
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/source.csv")
+    @CsvFileSource(resources = "/sourceCorrect.csv")
     void signIn(String user, String password) {
         AmazonBasePage basePage = open(url, AmazonBasePage.class);
+        basePage.checkCaptcha();
         AmazonJoinUserPage amazonJoinUserPage = basePage.getJoinUserPage();
         amazonJoinUserPage.userElement.setValue(user).pressEnter();
         amazonJoinUserPage.passwordElement.setValue(password).pressEnter();
         amazonJoinUserPage.checkCaptcha();
+        amazonJoinUserPage.checkPuzzle();
         AmazonSignInRightPage amazonSignInRightPage = page(AmazonSignInRightPage.class);
         assertTrue(amazonSignInRightPage.signRight.is(visible));
+        signOut(amazonSignInRightPage);
     }
 
     @Test
     void emptyUserName() {
         AmazonBasePage basePage = open(url, AmazonBasePage.class);
+        basePage.checkCaptcha();
         AmazonJoinUserPage amazonJoinUserPage = basePage.getJoinUserPage();
         amazonJoinUserPage.userElement.setValue("").pressEnter();
         assertTrue(amazonJoinUserPage.emptyUser.is(visible));
@@ -39,6 +43,7 @@ class AmazonTest {
     @CsvFileSource(resources = "/wrongInput.csv")
     void wrongInput(String input, String xPath) {
         AmazonBasePage basePage = open(url, AmazonBasePage.class);
+        basePage.checkCaptcha();
         AmazonJoinUserPage amazonJoinUserPage = basePage.getJoinUserPage();
         amazonJoinUserPage.userElement.setValue(input).pressEnter();
         assertTrue($(byXpath(xPath)).is(visible));
@@ -53,5 +58,13 @@ class AmazonTest {
         amazonJoinUserPage.passwordElement.setValue(inputPassword).pressEnter();
         amazonJoinUserPage.checkPuzzle();
         assertTrue($(byXpath(xPath)).shouldBe(visible).is(visible));
+    }
+
+    void signOut(AmazonSignInRightPage amazonSignInRightPage) {
+        if (amazonSignInRightPage.signRight.is(visible)) {
+            amazonSignInRightPage.all.click();
+            amazonSignInRightPage.signOut.click();
+            assertTrue(amazonSignInRightPage.signOutDone.is(visible));
+        }
     }
 }
