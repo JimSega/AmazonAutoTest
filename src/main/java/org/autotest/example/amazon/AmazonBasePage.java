@@ -1,37 +1,37 @@
 package org.autotest.example.amazon;
 
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.By;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.byXpath;
-import static com.codeborne.selenide.Selenide.$;
-
-import static com.codeborne.selenide.Selenide.open;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.codeborne.selenide.Selenide.page;
 
 public class AmazonBasePage {
-    protected SelenideElement captcha = $(By.xpath("//div/input[@id='captchacharacters']"));
+
+    @FindBy(how = How.XPATH, using = "//div/input[@id='captchacharacters']")
+    protected SelenideElement captcha;
+
+    @FindBy(how = How.CLASS_NAME, using = "hm-icon-label")
+    protected SelenideElement navigate;
+
+    @FindBy(how = How.XPATH, using = "//a[text()='Sign in']")
+    protected SelenideElement signIn;
+
+    public AmazonJoinUserPage getJoinUserPage() {
+        navigate.click();
+        signIn.click();
+        return page(AmazonJoinUserPage.class);
+    }
 
     public void checkCaptcha() {
-        if (captcha.is(visible)) {
+        if (this.captcha.is(visible)) {
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
-    }
-
-    public void signOut() {
-        if ($(byXpath("//div/span[contains(text(), 'Hello, first')]")).is(visible)) {
-            $(byXpath("//a/span[text()='All']")).shouldBe(visible).click();
-            $(byXpath("//a[text()='Sign Out']")).shouldBe(visible).click();
-            assertTrue($(byXpath("//h1[contains(text(), 'Sign')]")).is(visible));
-        }
-    }
-
-    public void openAmazon() {
-        open("https://www.amazon.com/");
     }
 }
