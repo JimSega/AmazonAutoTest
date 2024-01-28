@@ -1,6 +1,5 @@
 package org.autotest.example.amazon;
 
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -12,6 +11,9 @@ public class AmazonBasePage {
 
     @FindBy(how = How.XPATH, using = "//div/input[@id='captchacharacters']")
     protected SelenideElement captcha;
+
+    @FindBy(how = How.XPATH, using = "//span[contains(text(), 'Solve this puzzle')]")
+    protected SelenideElement puzzle;
 
     @FindBy(how = How.CLASS_NAME, using = "hm-icon-label")
     protected SelenideElement navigate;
@@ -26,9 +28,19 @@ public class AmazonBasePage {
     }
 
     public void checkCaptcha() {
-        if (this.captcha.is(visible)) {
+        if (captcha.is(visible)) {
             try {
                 Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void checkPuzzle() {
+        if (puzzle.is(visible)) {
+            try {
+                Thread.sleep(15000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
