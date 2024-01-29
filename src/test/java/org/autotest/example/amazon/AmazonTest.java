@@ -8,9 +8,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byXpath;
 import static com.codeborne.selenide.Selenide.*;
-import static org.junit.jupiter.api.Assertions.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AmazonTest {
     private static final String url = "https://www.amazon.com/";
 
@@ -26,7 +24,7 @@ class AmazonTest {
         amazonJoinUserPage.checkCaptcha();
         amazonJoinUserPage.checkPuzzle();
         AmazonSignInRightPage amazonSignInRightPage = page(AmazonSignInRightPage.class);
-        assertTrue(amazonSignInRightPage.signRight.is(visible));
+        amazonSignInRightPage.signRight.shouldBe(visible);
         signOut(amazonSignInRightPage);
     }
 
@@ -36,7 +34,7 @@ class AmazonTest {
         basePage.checkCaptcha();
         AmazonJoinUserPage amazonJoinUserPage = basePage.getJoinUserPage();
         amazonJoinUserPage.userElement.setValue("").pressEnter();
-        assertTrue(amazonJoinUserPage.emptyUser.is(visible));
+        amazonJoinUserPage.emptyUser.shouldBe(visible);
     }
 
     @ParameterizedTest
@@ -46,7 +44,7 @@ class AmazonTest {
         basePage.checkCaptcha();
         AmazonJoinUserPage amazonJoinUserPage = basePage.getJoinUserPage();
         amazonJoinUserPage.userElement.setValue(input).pressEnter();
-        assertTrue($(byXpath(xPath)).is(visible));
+        $(byXpath(xPath)).shouldBe(visible);
     }
 
     @ParameterizedTest
@@ -58,14 +56,14 @@ class AmazonTest {
         amazonJoinUserPage.userElement.setValue(name).pressEnter();
         amazonJoinUserPage.passwordElement.setValue(inputPassword).pressEnter();
         amazonJoinUserPage.checkPuzzle();
-        assertTrue($(byXpath(xPath)).shouldBe(visible).is(visible));
+        $(byXpath(xPath)).shouldBe(visible);
     }
 
     void signOut(AmazonSignInRightPage amazonSignInRightPage) {
         if (amazonSignInRightPage.signRight.is(visible)) {
             amazonSignInRightPage.all.click();
             amazonSignInRightPage.signOut.click();
-            assertTrue(amazonSignInRightPage.signOutDone.is(visible));
+            amazonSignInRightPage.signOutDone.shouldBe(visible);
         }
     }
 }
