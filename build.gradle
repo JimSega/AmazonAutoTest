@@ -21,4 +21,5 @@ dependencies {
 test {
     useJUnitPlatform()
     systemProperties = System.properties
+    println(System.properties.getProperty("password"))
 }
