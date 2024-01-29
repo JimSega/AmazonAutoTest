@@ -14,6 +14,8 @@ dependencies {
     implementation 'org.junit.jupiter:junit-jupiter'
     implementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
     implementation 'com.codeborne:selenide:7.0.4'
+
+    implementation 'org.aeonbits.owner:owner:1.0.12'
 }
 
 test {

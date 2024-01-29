@@ -1,8 +1,0 @@
-1,"//h4[contains(text(), 'Incorrect phone number')]"
-"0","//a[contains(text(), 'Change')]"
--3750000000,"//h4[contains(text(), 'Incorrect phone number')]"
-+3750000000,"//h4[contains(text(), 'Incorrect phone number')]"
-+,"//h4[contains(text(), 'was a problem')]"
-9 223 372 036 854 775 807,"//h4[contains(text(), 'Incorrect phone number')]"
--9 223 372 036 854 775 808,"//h4[contains(text(), 'Incorrect phone number')]"
-.,"//h4[contains(text(), 'was a problem')]"

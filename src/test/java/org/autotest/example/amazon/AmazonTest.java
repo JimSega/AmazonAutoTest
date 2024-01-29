@@ -1,5 +1,7 @@
 package org.autotest.example.amazon;
 
+import org.autotest.example.amazon.properties.ReadProperties;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -10,8 +12,14 @@ import static com.codeborne.selenide.Selectors.byXpath;
 import static com.codeborne.selenide.Selenide.*;
 
 class AmazonTest {
-    private static final String url = "https://www.amazon.com/";
+    //private static final String url = "https://www.amazon.com/";
+    private static String url;
 
+    @BeforeAll
+    public static void read() {
+        ReadProperties readProperties = new ReadProperties();
+        url = readProperties.
+    }
 
     @ParameterizedTest
     @CsvFileSource(resources = "/sourceCorrect.csv")
@@ -39,7 +47,6 @@ class AmazonTest {
     }
 
     @ParameterizedTest
-    //@CsvFileSource(resources = "/wrongInput.csv")
     @CsvSource(value = {
             "1$//h4[contains(text(), 'Incorrect phone number')]",
             "0$//a[contains(text(), 'Change')]",
@@ -50,7 +57,7 @@ class AmazonTest {
             "-9 223 372 036 854 775 808$//h4[contains(text(), 'Incorrect phone number')]",
             ".$//h4[contains(text(), 'was a problem')]"
     }, ignoreLeadingAndTrailingWhitespace = false,
-    delimiter = '$')
+            delimiter = '$')
     void wrongInput(String input, String xPath) {
         AmazonBasePage basePage = open(url, AmazonBasePage.class);
         basePage.checkCaptcha();
@@ -60,7 +67,12 @@ class AmazonTest {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/wrongPassword.csv")
+    @CsvSource(value = {
+            "SeleniumAuto@proton.me~~//div[contains(text(), 'Enter your password')]",
+            "SeleniumAuto@proton.me~ ~//span[contains(text(), 'password is incorrect')]",
+            "SeleniumAuto@proton.me~!@#$$%^&*()_+|}{/*-+.<./~//span[contains(text(), 'password is incorrect')]"
+    }, ignoreLeadingAndTrailingWhitespace = false,
+            delimiter = '~')
     void wrongPassword(String name, String inputPassword, String xPath) {
         AmazonBasePage basePage = open(url, AmazonBasePage.class);
         basePage.checkCaptcha();

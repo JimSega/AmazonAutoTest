@@ -3,6 +3,8 @@ build/
 *.yml
 *.yaml
 *.csv
+*.properties
+!**/src/test/resources/general.properties
 !**/src/test/resources/wrongInput.csv
 !**/src/test/resources/wrongPassword.csv
 !gradle/wrapper/gradle-wrapper.jar
