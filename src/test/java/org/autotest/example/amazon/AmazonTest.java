@@ -1,9 +1,10 @@
 package org.autotest.example.amazon;
 
-import org.autotest.example.amazon.properties.ReadProperties;
+import org.aeonbits.owner.ConfigCache;
+import org.autotest.example.amazon.properties.GeneralConfig;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EmptySource;
 
@@ -12,22 +13,24 @@ import static com.codeborne.selenide.Selectors.byXpath;
 import static com.codeborne.selenide.Selenide.*;
 
 class AmazonTest {
-    //private static final String url = "https://www.amazon.com/";
     private static String url;
+    private static String userName;
+    private static String password;
 
     @BeforeAll
     public static void read() {
-        ReadProperties readProperties = new ReadProperties();
-        url = readProperties.
+        GeneralConfig generalConfig = ConfigCache.getOrCreate(GeneralConfig.class);
+        url = generalConfig.url();
+        userName = generalConfig.userName();
+        password = System.getProperty("password");
     }
 
-    @ParameterizedTest
-    @CsvFileSource(resources = "/sourceCorrect.csv")
-    void signIn(String user, String password) {
+    @Test
+    void signIn() {
         AmazonBasePage basePage = open(url, AmazonBasePage.class);
         basePage.checkCaptcha();
         AmazonJoinUserPage amazonJoinUserPage = basePage.getJoinUserPage();
-        amazonJoinUserPage.userElement.setValue(user).pressEnter();
+        amazonJoinUserPage.userElement.setValue(userName).pressEnter();
         amazonJoinUserPage.passwordElement.setValue(password).pressEnter();
         amazonJoinUserPage.checkCaptcha();
         amazonJoinUserPage.checkPuzzle();
@@ -68,16 +71,16 @@ class AmazonTest {
 
     @ParameterizedTest
     @CsvSource(value = {
-            "SeleniumAuto@proton.me~~//div[contains(text(), 'Enter your password')]",
-            "SeleniumAuto@proton.me~ ~//span[contains(text(), 'password is incorrect')]",
-            "SeleniumAuto@proton.me~!@#$$%^&*()_+|}{/*-+.<./~//span[contains(text(), 'password is incorrect')]"
+            "~//div[contains(text(), 'Enter your password')]",
+            " ~//span[contains(text(), 'password is incorrect')]",
+            "!@#$$%^&*()_+|}{/*-+.<./~//span[contains(text(), 'password is incorrect')]"
     }, ignoreLeadingAndTrailingWhitespace = false,
             delimiter = '~')
-    void wrongPassword(String name, String inputPassword, String xPath) {
+    void wrongPassword(String inputPassword, String xPath) {
         AmazonBasePage basePage = open(url, AmazonBasePage.class);
         basePage.checkCaptcha();
         AmazonJoinUserPage amazonJoinUserPage = basePage.getJoinUserPage();
-        amazonJoinUserPage.userElement.setValue(name).pressEnter();
+        amazonJoinUserPage.userElement.setValue(userName).pressEnter();
         amazonJoinUserPage.passwordElement.setValue(inputPassword).pressEnter();
         amazonJoinUserPage.checkPuzzle();
         $(byXpath(xPath)).shouldBe(visible);
