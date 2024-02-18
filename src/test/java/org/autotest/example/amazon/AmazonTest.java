@@ -10,8 +10,7 @@ import org.junit.jupiter.params.provider.EmptySource;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byXpath;
-import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.*;
 
 
 class AmazonTest extends BaseTest {
