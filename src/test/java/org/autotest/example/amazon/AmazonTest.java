@@ -1,15 +1,32 @@
 package org.autotest.example.amazon;
 
+import org.aeonbits.owner.ConfigCache;
+import org.autotest.example.amazon.properties.GeneralConfig;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EmptySource;
 
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.byXpath;
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.$;
 
 
 class AmazonTest extends BaseTest {
+
+    private static String url;
+    private static String userName;
+    private static String password;
+
+    @BeforeAll
+    public static void read() {
+        GeneralConfig generalConfig = ConfigCache.getOrCreate(GeneralConfig.class);
+        url = generalConfig.url();
+        userName = generalConfig.userName();
+        password = System.getProperty("password");
+    }
 
 
     @Test
