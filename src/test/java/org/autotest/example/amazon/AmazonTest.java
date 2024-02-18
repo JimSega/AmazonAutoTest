@@ -1,29 +1,16 @@
 package org.autotest.example.amazon;
 
-import org.aeonbits.owner.ConfigCache;
-import org.autotest.example.amazon.properties.GeneralConfig;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EmptySource;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.byXpath;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.open;
 
-class AmazonTest {
-    private static String url;
-    private static String userName;
-    private static String password;
 
-    @BeforeAll
-    public static void read() {
-        GeneralConfig generalConfig = ConfigCache.getOrCreate(GeneralConfig.class);
-        url = generalConfig.url();
-        userName = generalConfig.userName();
-        password = System.getProperty("password");
-    }
+class AmazonTest extends BaseTest {
+
 
     @Test
     void signIn() {
@@ -37,6 +24,14 @@ class AmazonTest {
         AmazonSignInRightPage amazonSignInRightPage = page(AmazonSignInRightPage.class);
         amazonSignInRightPage.signRight.shouldBe(visible);
         signOut(amazonSignInRightPage);
+
+        new AmazonJoinUserPage().open()
+                .setName(getUserName())
+                .setMobileOrEmail("test@test.com")
+                .setPassword("123456")
+                .setRePassword("123456")
+                .clickContinueButton()
+                .shouldBeVisible();
     }
 
     @ParameterizedTest
