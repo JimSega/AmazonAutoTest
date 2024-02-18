@@ -12,7 +12,6 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
 
-class AmazonTest {
 
 class AmazonTest extends BaseTest {
 
