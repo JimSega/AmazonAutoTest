@@ -13,9 +13,6 @@ import static com.codeborne.selenide.Selenide.page;
 
 public class AmazonBasePage {
 
-//    @FindBy(how = How.XPATH, using = "//div/input[@id='captchacharacters']")
-//    protected SelenideElement captcha;
-
     private GeneralConfig generalConfig = ConfigCache.getOrCreate(GeneralConfig.class);
 
     private final SelenideElement captcha = $("#captchacharacters");
