@@ -12,7 +12,9 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
 
-class AmazonTest {
+
+class AmazonTest extends BaseTest {
+
     private static String url;
     private static String userName;
     private static String password;
@@ -24,6 +26,7 @@ class AmazonTest {
         userName = generalConfig.userName();
         password = System.getProperty("password");
     }
+
 
     @Test
     void signIn() {
@@ -37,6 +40,14 @@ class AmazonTest {
         AmazonSignInRightPage amazonSignInRightPage = page(AmazonSignInRightPage.class);
         amazonSignInRightPage.signRight.shouldBe(visible);
         signOut(amazonSignInRightPage);
+
+        new AmazonJoinUserPage().open()
+                .setName(getUserName())
+                .setMobileOrEmail("test@test.com")
+                .setPassword("123456")
+                .setRePassword("123456")
+                .clickContinueButton()
+                .shouldBeVisible();
     }
 
     @ParameterizedTest

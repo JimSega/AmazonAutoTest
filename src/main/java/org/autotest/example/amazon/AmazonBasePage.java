@@ -1,16 +1,25 @@
 package org.autotest.example.amazon;
 
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import org.aeonbits.owner.ConfigCache;
+import org.autotest.example.amazon.properties.GeneralConfig;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.page;
 
 public class AmazonBasePage {
 
-    @FindBy(how = How.XPATH, using = "//div/input[@id='captchacharacters']")
-    protected SelenideElement captcha;
+//    @FindBy(how = How.XPATH, using = "//div/input[@id='captchacharacters']")
+//    protected SelenideElement captcha;
+
+    private GeneralConfig generalConfig = ConfigCache.getOrCreate(GeneralConfig.class);
+
+    private final SelenideElement captcha = $("#captchacharacters");
+    private final SelenideElement container = $("#pageContent");
 
     @FindBy(how = How.XPATH, using = "//span[contains(text(), 'Solve this puzzle')]")
     protected SelenideElement puzzle;
@@ -28,6 +37,16 @@ public class AmazonBasePage {
         navigate.click();
         signIn.click();
         return page(AmazonJoinUserPage.class);
+    }
+
+    public AmazonBasePage open(String url) {
+        Selenide.open(url);
+        return this;
+    }
+
+    public AmazonBasePage shouldBeVisible() {
+        container.shouldBe(visible);
+        return this;
     }
 
     public void checkCaptcha() {
@@ -48,5 +67,9 @@ public class AmazonBasePage {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public String getBaseUrl() {
+        return generalConfig.url();
     }
 }
